@@ -1,0 +1,4 @@
+group,caseId,sourceCase,property,m1,m2,structureGroup,partition,preprocess,policy,valid,verdict,status,match,tMeanMs,q,sigma,r,error
+"AUTOSAR-3 Channel","Experiment3_1","autosar3.Experiment3_1","A[] buffer1.count >= 0","runnable1..7+buffer1..3+task1..3","schedule","M1-multi/M2-single","original split","NONE","DYNAMIC_GAMMA","Yes","SAFE","PASS","YES",1822,2,3,1,
+"AUTOSAR-3 Channel","Experiment3_2","autosar3.Experiment3_2","A[] buffer2.count >= 0","buffer2","runnable1..7+buffer1+buffer3+task1..3+schedule","M1-single/M2-multi","minimal repartition around buffer2 after original split incompatibility","NONE","DYNAMIC_GAMMA","Yes","SAFE","PASS","YES",1688,3,2,1,
+"AUTOSAR-3 Channel","Experiment3_3","autosar3.Experiment3_3","A[] buffer3.count >= 0","buffer3","runnable1..7+buffer1..2+task1..3+schedule","M1-single/M2-multi","minimal repartition around buffer3 after original split incompatibility","NONE","DYNAMIC_GAMMA","Yes","SAFE","PASS","YES",7261,5,2,3,

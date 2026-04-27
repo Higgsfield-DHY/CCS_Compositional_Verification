@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE nta PUBLIC "-//Uppaal Team//DTD Flat System 1.1//EN" "http://www.it.uu.se/research/group/darts/uppaal/flat-1_1.dtd">
+
+<nta>
+  <declaration>chan put,get;
+</declaration>  <template>    <name>Buffer</name>
+    <declaration>int count=0,len=2;
+</declaration>    <location id="Buffer_BufferB0">      <name>B0</name>
+    </location>
+    <location id="Buffer_BufferB1">
+      <name>B1</name>
+    </location>
+    <location id="Buffer_BufferB2">
+      <name>B2</name>
+    </location>
+    <init ref="Buffer_BufferB0"/>
+    <transition>
+      <source ref="Buffer_BufferB0"/>
+      <target ref="Buffer_BufferB1"/>
+      <label kind="synchronisation">put?</label>
+      <label kind="assignment">count = count + 1</label>
+    </transition>
+    <transition>
+      <source ref="Buffer_BufferB1"/>
+      <target ref="Buffer_BufferB2"/>
+      <label kind="synchronisation">put?</label>
+      <label kind="assignment">count = count + 1</label>
+    </transition>
+    <transition>
+      <source ref="Buffer_BufferB1"/>
+      <target ref="Buffer_BufferB0"/>
+      <label kind="synchronisation">get?</label>
+      <label kind="assignment">count = count - 1</label>
+    </transition>
+    <transition>
+      <source ref="Buffer_BufferB2"/>
+      <target ref="Buffer_BufferB1"/>
+      <label kind="synchronisation">get?</label>
+      <label kind="assignment">count = count - 1</label>
+    </transition>
+  </template>
+  <template>
+    <name>Producer_1</name>
+    <declaration>clock xp1;
+</declaration>    <location id="Producer_1_Producer_1Idle">      <name>Idle</name>
+    </location>
+    <location id="Producer_1_Producer_1Ready">
+      <name>Ready</name>
+    </location>
+    <init ref="Producer_1_Producer_1Idle"/>
+    <transition>
+      <source ref="Producer_1_Producer_1Idle"/>
+      <target ref="Producer_1_Producer_1Ready"/>
+      <label kind="guard">xp1 &lt; 5</label>
+      <label kind="assignment">xp1 = 0</label>
+    </transition>
+    <transition>
+      <source ref="Producer_1_Producer_1Ready"/>
+      <target ref="Producer_1_Producer_1Idle"/>
+      <label kind="synchronisation">put!</label>
+      <label kind="guard">xp1 &lt; 2</label>
+      <label kind="assignment">xp1 = 0</label>
+    </transition>
+  </template>
+  <template>
+    <name>Consumer_1</name>
+    <declaration>clock yc1;
+</declaration>    <location id="Consumer_1_Consumer_1Wait">      <name>Wait</name>
+    </location>
+    <location id="Consumer_1_Consumer_1Use">
+      <name>Use</name>
+    </location>
+    <init ref="Consumer_1_Consumer_1Wait"/>
+    <transition>
+      <source ref="Consumer_1_Consumer_1Wait"/>
+      <target ref="Consumer_1_Consumer_1Use"/>
+      <label kind="synchronisation">get!</label>
+      <label kind="guard">yc1 &lt; 6</label>
+      <label kind="assignment">yc1 = 0</label>
+    </transition>
+    <transition>
+      <source ref="Consumer_1_Consumer_1Use"/>
+      <target ref="Consumer_1_Consumer_1Wait"/>
+      <label kind="guard">yc1 &gt;= 1 &amp;&amp; yc1 &lt; 4</label>
+      <label kind="assignment">yc1 = 0</label>
+    </transition>
+  </template>
+  <template>
+    <name>Consumer_2</name>
+    <declaration>clock yc2;
+</declaration>    <location id="Consumer_2_Consumer_2Wait">      <name>Wait</name>
+    </location>
+    <location id="Consumer_2_Consumer_2Use">
+      <name>Use</name>
+    </location>
+    <init ref="Consumer_2_Consumer_2Wait"/>
+    <transition>
+      <source ref="Consumer_2_Consumer_2Wait"/>
+      <target ref="Consumer_2_Consumer_2Use"/>
+      <label kind="synchronisation">get!</label>
+      <label kind="guard">yc2 &lt; 6</label>
+      <label kind="assignment">yc2 = 0</label>
+    </transition>
+    <transition>
+      <source ref="Consumer_2_Consumer_2Use"/>
+      <target ref="Consumer_2_Consumer_2Wait"/>
+      <label kind="guard">yc2 &gt;= 1 &amp;&amp; yc2 &lt; 4</label>
+      <label kind="assignment">yc2 = 0</label>
+    </transition>
+  </template>
+  <template>
+    <name>Consumer_3</name>
+    <declaration>clock yc3;
+</declaration>    <location id="Consumer_3_Consumer_3Wait">      <name>Wait</name>
+    </location>
+    <location id="Consumer_3_Consumer_3Use">
+      <name>Use</name>
+    </location>
+    <init ref="Consumer_3_Consumer_3Wait"/>
+    <transition>
+      <source ref="Consumer_3_Consumer_3Wait"/>
+      <target ref="Consumer_3_Consumer_3Use"/>
+      <label kind="synchronisation">get!</label>
+      <label kind="guard">yc3 &lt; 6</label>
+      <label kind="assignment">yc3 = 0</label>
+    </transition>
+    <transition>
+      <source ref="Consumer_3_Consumer_3Use"/>
+      <target ref="Consumer_3_Consumer_3Wait"/>
+      <label kind="guard">yc3 &gt;= 1 &amp;&amp; yc3 &lt; 4</label>
+      <label kind="assignment">yc3 = 0</label>
+    </transition>
+  </template>
+  <system>system Buffer,Producer_1,Consumer_1,Consumer_2,Consumer_3;</system>
+</nta>

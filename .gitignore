@@ -1,0 +1,18 @@
+target/
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.versionsBackup
+pom.xml.next
+release.properties
+dependency-reduced-pom.xml
+buildNumber.properties
+.mvn/timing.properties
+.mvn/wrapper/maven-wrapper.jar
+
+# Temporary verification workspace files
+src/main/resources/verification/tmp_unsat*.q
+src/main/resources/verification/trace-*
+src/main/resources/verification/nta.q
+src/main/resources/verification/nta.xml
+src/main/resources/verification/ctx*.xml
+src/main/resources/verification/组合验证实验数据__.xlsx

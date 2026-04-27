@@ -1,0 +1,437 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE nta PUBLIC "-//Uppaal Team//DTD Flat System 1.1//EN" "http://www.it.uu.se/research/group/darts/uppaal/flat-1_1.dtd">
+
+<nta>
+  <declaration>chan try_1,setX_1,enter_1,setX0_1,retry_1,enter_hook_1,exit_hook_1,try_2,setX_2,enter_2,setX0_2,retry_2,enter_hook_2,exit_hook_2,try_3,setX_3,enter_3,setX0_3,retry_3,enter_hook_3,exit_hook_3;
+</declaration>  <template>    <name>Mutex</name>
+    <declaration>int hold=0;
+</declaration>    <location id="Mutex_Mutexq0">      <name>q0</name>
+    </location>
+    <init ref="Mutex_Mutexq0"/>
+    <transition>
+      <source ref="Mutex_Mutexq0"/>
+      <target ref="Mutex_Mutexq0"/>
+      <label kind="synchronisation">enter_hook_1?</label>
+      <label kind="assignment">hold = hold + 1</label>
+    </transition>
+    <transition>
+      <source ref="Mutex_Mutexq0"/>
+      <target ref="Mutex_Mutexq0"/>
+      <label kind="synchronisation">exit_hook_1?</label>
+      <label kind="guard">hold &gt; 0</label>
+      <label kind="assignment">hold = hold - 1</label>
+    </transition>
+    <transition>
+      <source ref="Mutex_Mutexq0"/>
+      <target ref="Mutex_Mutexq0"/>
+      <label kind="synchronisation">enter_hook_2?</label>
+      <label kind="assignment">hold = hold + 1</label>
+    </transition>
+    <transition>
+      <source ref="Mutex_Mutexq0"/>
+      <target ref="Mutex_Mutexq0"/>
+      <label kind="synchronisation">exit_hook_2?</label>
+      <label kind="guard">hold &gt; 0</label>
+      <label kind="assignment">hold = hold - 1</label>
+    </transition>
+    <transition>
+      <source ref="Mutex_Mutexq0"/>
+      <target ref="Mutex_Mutexq0"/>
+      <label kind="synchronisation">enter_hook_3?</label>
+      <label kind="assignment">hold = hold + 1</label>
+    </transition>
+    <transition>
+      <source ref="Mutex_Mutexq0"/>
+      <target ref="Mutex_Mutexq0"/>
+      <label kind="synchronisation">exit_hook_3?</label>
+      <label kind="guard">hold &gt; 0</label>
+      <label kind="assignment">hold = hold - 1</label>
+    </transition>
+  </template>
+  <template>
+    <name>Process_1</name>
+    <declaration>clock x1;
+</declaration>    <location id="Process_1_Process_1idle">      <name>idle</name>
+    </location>
+    <location id="Process_1_Process_1req">
+      <name>req</name>
+    </location>
+    <location id="Process_1_Process_1wait">
+      <name>wait</name>
+    </location>
+    <location id="Process_1_Process_1crit">
+      <name>crit</name>
+    </location>
+    <init ref="Process_1_Process_1idle"/>
+    <transition>
+      <source ref="Process_1_Process_1idle"/>
+      <target ref="Process_1_Process_1req"/>
+      <label kind="synchronisation">try_1!</label>
+      <label kind="assignment">x1 = 0</label>
+    </transition>
+    <transition>
+      <source ref="Process_1_Process_1req"/>
+      <target ref="Process_1_Process_1wait"/>
+      <label kind="synchronisation">setX_1!</label>
+      <label kind="guard">x1 &gt;= 0 &amp;&amp; x1 &lt; 10</label>
+      <label kind="assignment">x1 = 0</label>
+    </transition>
+    <transition>
+      <source ref="Process_1_Process_1wait"/>
+      <target ref="Process_1_Process_1crit"/>
+      <label kind="synchronisation">enter_1!</label>
+      <label kind="guard">x1 &gt; 19</label>
+    </transition>
+    <transition>
+      <source ref="Process_1_Process_1crit"/>
+      <target ref="Process_1_Process_1idle"/>
+      <label kind="synchronisation">setX0_1!</label>
+    </transition>
+    <transition>
+      <source ref="Process_1_Process_1wait"/>
+      <target ref="Process_1_Process_1idle"/>
+      <label kind="synchronisation">retry_1!</label>
+    </transition>
+  </template>
+  <template>
+    <name>Process_2</name>
+    <declaration>clock x2;
+</declaration>    <location id="Process_2_Process_2idle">      <name>idle</name>
+    </location>
+    <location id="Process_2_Process_2req">
+      <name>req</name>
+    </location>
+    <location id="Process_2_Process_2wait">
+      <name>wait</name>
+    </location>
+    <location id="Process_2_Process_2crit">
+      <name>crit</name>
+    </location>
+    <init ref="Process_2_Process_2idle"/>
+    <transition>
+      <source ref="Process_2_Process_2idle"/>
+      <target ref="Process_2_Process_2req"/>
+      <label kind="synchronisation">try_2!</label>
+      <label kind="assignment">x2 = 0</label>
+    </transition>
+    <transition>
+      <source ref="Process_2_Process_2req"/>
+      <target ref="Process_2_Process_2wait"/>
+      <label kind="synchronisation">setX_2!</label>
+      <label kind="guard">x2 &gt;= 0 &amp;&amp; x2 &lt; 10</label>
+      <label kind="assignment">x2 = 0</label>
+    </transition>
+    <transition>
+      <source ref="Process_2_Process_2wait"/>
+      <target ref="Process_2_Process_2crit"/>
+      <label kind="synchronisation">enter_2!</label>
+      <label kind="guard">x2 &gt; 19</label>
+    </transition>
+    <transition>
+      <source ref="Process_2_Process_2crit"/>
+      <target ref="Process_2_Process_2idle"/>
+      <label kind="synchronisation">setX0_2!</label>
+    </transition>
+    <transition>
+      <source ref="Process_2_Process_2wait"/>
+      <target ref="Process_2_Process_2idle"/>
+      <label kind="synchronisation">retry_2!</label>
+    </transition>
+  </template>
+  <template>
+    <name>Process_3</name>
+    <declaration>clock x3;
+</declaration>    <location id="Process_3_Process_3idle">      <name>idle</name>
+    </location>
+    <location id="Process_3_Process_3req">
+      <name>req</name>
+    </location>
+    <location id="Process_3_Process_3wait">
+      <name>wait</name>
+    </location>
+    <location id="Process_3_Process_3crit">
+      <name>crit</name>
+    </location>
+    <init ref="Process_3_Process_3idle"/>
+    <transition>
+      <source ref="Process_3_Process_3idle"/>
+      <target ref="Process_3_Process_3req"/>
+      <label kind="synchronisation">try_3!</label>
+      <label kind="assignment">x3 = 0</label>
+    </transition>
+    <transition>
+      <source ref="Process_3_Process_3req"/>
+      <target ref="Process_3_Process_3wait"/>
+      <label kind="synchronisation">setX_3!</label>
+      <label kind="guard">x3 &gt;= 0 &amp;&amp; x3 &lt; 10</label>
+      <label kind="assignment">x3 = 0</label>
+    </transition>
+    <transition>
+      <source ref="Process_3_Process_3wait"/>
+      <target ref="Process_3_Process_3crit"/>
+      <label kind="synchronisation">enter_3!</label>
+      <label kind="guard">x3 &gt; 19</label>
+    </transition>
+    <transition>
+      <source ref="Process_3_Process_3crit"/>
+      <target ref="Process_3_Process_3idle"/>
+      <label kind="synchronisation">setX0_3!</label>
+    </transition>
+    <transition>
+      <source ref="Process_3_Process_3wait"/>
+      <target ref="Process_3_Process_3idle"/>
+      <label kind="synchronisation">retry_3!</label>
+    </transition>
+  </template>
+  <template>
+    <name>Global_Var</name>
+    <declaration>clock y;
+</declaration>    <location id="Global_Var_Global_VarL0">      <name>L0</name>
+    </location>
+    <location id="Global_Var_Global_VarL1">
+      <name>L1</name>
+    </location>
+    <location id="Global_Var_Global_VarL2">
+      <name>L2</name>
+    </location>
+    <location id="Global_Var_Global_VarL3">
+      <name>L3</name>
+    </location>
+    <location id="Global_Var_Global_VarenterHook1">
+      <name>enterHook1</name>
+      <committed/>
+    </location>
+    <location id="Global_Var_Global_VarexitHook1">
+      <name>exitHook1</name>
+      <committed/>
+    </location>
+    <location id="Global_Var_Global_VarenterHook2">
+      <name>enterHook2</name>
+      <committed/>
+    </location>
+    <location id="Global_Var_Global_VarexitHook2">
+      <name>exitHook2</name>
+      <committed/>
+    </location>
+    <location id="Global_Var_Global_VarenterHook3">
+      <name>enterHook3</name>
+      <committed/>
+    </location>
+    <location id="Global_Var_Global_VarexitHook3">
+      <name>exitHook3</name>
+      <committed/>
+    </location>
+    <init ref="Global_Var_Global_VarL0"/>
+    <transition>
+      <source ref="Global_Var_Global_VarL0"/>
+      <target ref="Global_Var_Global_VarL0"/>
+      <label kind="synchronisation">try_1?</label>
+      <label kind="assignment">y = 0</label>
+    </transition>
+    <transition>
+      <source ref="Global_Var_Global_VarL0"/>
+      <target ref="Global_Var_Global_VarL0"/>
+      <label kind="synchronisation">retry_1?</label>
+      <label kind="assignment">y = 0</label>
+    </transition>
+    <transition>
+      <source ref="Global_Var_Global_VarL0"/>
+      <target ref="Global_Var_Global_VarL1"/>
+      <label kind="synchronisation">setX_1?</label>
+      <label kind="assignment">y = 0</label>
+    </transition>
+    <transition>
+      <source ref="Global_Var_Global_VarL1"/>
+      <target ref="Global_Var_Global_VarL1"/>
+      <label kind="synchronisation">setX_1?</label>
+      <label kind="assignment">y = 0</label>
+    </transition>
+    <transition>
+      <source ref="Global_Var_Global_VarL1"/>
+      <target ref="Global_Var_Global_VarenterHook1"/>
+      <label kind="synchronisation">enter_1?</label>
+      <label kind="assignment">y = 0</label>
+    </transition>
+    <transition>
+      <source ref="Global_Var_Global_VarL1"/>
+      <target ref="Global_Var_Global_VarexitHook1"/>
+      <label kind="synchronisation">setX0_1?</label>
+      <label kind="assignment">y = 0</label>
+    </transition>
+    <transition>
+      <source ref="Global_Var_Global_VarenterHook1"/>
+      <target ref="Global_Var_Global_VarL1"/>
+      <label kind="synchronisation">enter_hook_1!</label>
+    </transition>
+    <transition>
+      <source ref="Global_Var_Global_VarexitHook1"/>
+      <target ref="Global_Var_Global_VarL0"/>
+      <label kind="synchronisation">exit_hook_1!</label>
+    </transition>
+    <transition>
+      <source ref="Global_Var_Global_VarL1"/>
+      <target ref="Global_Var_Global_VarL1"/>
+      <label kind="synchronisation">retry_2?</label>
+      <label kind="assignment">y = 0</label>
+    </transition>
+    <transition>
+      <source ref="Global_Var_Global_VarL1"/>
+      <target ref="Global_Var_Global_VarL2"/>
+      <label kind="synchronisation">setX_2?</label>
+      <label kind="assignment">y = 0</label>
+    </transition>
+    <transition>
+      <source ref="Global_Var_Global_VarL1"/>
+      <target ref="Global_Var_Global_VarL1"/>
+      <label kind="synchronisation">retry_3?</label>
+      <label kind="assignment">y = 0</label>
+    </transition>
+    <transition>
+      <source ref="Global_Var_Global_VarL1"/>
+      <target ref="Global_Var_Global_VarL3"/>
+      <label kind="synchronisation">setX_3?</label>
+      <label kind="assignment">y = 0</label>
+    </transition>
+    <transition>
+      <source ref="Global_Var_Global_VarL0"/>
+      <target ref="Global_Var_Global_VarL0"/>
+      <label kind="synchronisation">try_2?</label>
+      <label kind="assignment">y = 0</label>
+    </transition>
+    <transition>
+      <source ref="Global_Var_Global_VarL0"/>
+      <target ref="Global_Var_Global_VarL0"/>
+      <label kind="synchronisation">retry_2?</label>
+      <label kind="assignment">y = 0</label>
+    </transition>
+    <transition>
+      <source ref="Global_Var_Global_VarL0"/>
+      <target ref="Global_Var_Global_VarL2"/>
+      <label kind="synchronisation">setX_2?</label>
+      <label kind="assignment">y = 0</label>
+    </transition>
+    <transition>
+      <source ref="Global_Var_Global_VarL2"/>
+      <target ref="Global_Var_Global_VarL2"/>
+      <label kind="synchronisation">setX_2?</label>
+      <label kind="assignment">y = 0</label>
+    </transition>
+    <transition>
+      <source ref="Global_Var_Global_VarL2"/>
+      <target ref="Global_Var_Global_VarenterHook2"/>
+      <label kind="synchronisation">enter_2?</label>
+      <label kind="assignment">y = 0</label>
+    </transition>
+    <transition>
+      <source ref="Global_Var_Global_VarL2"/>
+      <target ref="Global_Var_Global_VarexitHook2"/>
+      <label kind="synchronisation">setX0_2?</label>
+      <label kind="assignment">y = 0</label>
+    </transition>
+    <transition>
+      <source ref="Global_Var_Global_VarenterHook2"/>
+      <target ref="Global_Var_Global_VarL2"/>
+      <label kind="synchronisation">enter_hook_2!</label>
+    </transition>
+    <transition>
+      <source ref="Global_Var_Global_VarexitHook2"/>
+      <target ref="Global_Var_Global_VarL0"/>
+      <label kind="synchronisation">exit_hook_2!</label>
+    </transition>
+    <transition>
+      <source ref="Global_Var_Global_VarL2"/>
+      <target ref="Global_Var_Global_VarL2"/>
+      <label kind="synchronisation">retry_1?</label>
+      <label kind="assignment">y = 0</label>
+    </transition>
+    <transition>
+      <source ref="Global_Var_Global_VarL2"/>
+      <target ref="Global_Var_Global_VarL1"/>
+      <label kind="synchronisation">setX_1?</label>
+      <label kind="assignment">y = 0</label>
+    </transition>
+    <transition>
+      <source ref="Global_Var_Global_VarL2"/>
+      <target ref="Global_Var_Global_VarL2"/>
+      <label kind="synchronisation">retry_3?</label>
+      <label kind="assignment">y = 0</label>
+    </transition>
+    <transition>
+      <source ref="Global_Var_Global_VarL2"/>
+      <target ref="Global_Var_Global_VarL3"/>
+      <label kind="synchronisation">setX_3?</label>
+      <label kind="assignment">y = 0</label>
+    </transition>
+    <transition>
+      <source ref="Global_Var_Global_VarL0"/>
+      <target ref="Global_Var_Global_VarL0"/>
+      <label kind="synchronisation">try_3?</label>
+      <label kind="assignment">y = 0</label>
+    </transition>
+    <transition>
+      <source ref="Global_Var_Global_VarL0"/>
+      <target ref="Global_Var_Global_VarL0"/>
+      <label kind="synchronisation">retry_3?</label>
+      <label kind="assignment">y = 0</label>
+    </transition>
+    <transition>
+      <source ref="Global_Var_Global_VarL0"/>
+      <target ref="Global_Var_Global_VarL3"/>
+      <label kind="synchronisation">setX_3?</label>
+      <label kind="assignment">y = 0</label>
+    </transition>
+    <transition>
+      <source ref="Global_Var_Global_VarL3"/>
+      <target ref="Global_Var_Global_VarL3"/>
+      <label kind="synchronisation">setX_3?</label>
+      <label kind="assignment">y = 0</label>
+    </transition>
+    <transition>
+      <source ref="Global_Var_Global_VarL3"/>
+      <target ref="Global_Var_Global_VarenterHook3"/>
+      <label kind="synchronisation">enter_3?</label>
+      <label kind="assignment">y = 0</label>
+    </transition>
+    <transition>
+      <source ref="Global_Var_Global_VarL3"/>
+      <target ref="Global_Var_Global_VarexitHook3"/>
+      <label kind="synchronisation">setX0_3?</label>
+      <label kind="assignment">y = 0</label>
+    </transition>
+    <transition>
+      <source ref="Global_Var_Global_VarenterHook3"/>
+      <target ref="Global_Var_Global_VarL3"/>
+      <label kind="synchronisation">enter_hook_3!</label>
+    </transition>
+    <transition>
+      <source ref="Global_Var_Global_VarexitHook3"/>
+      <target ref="Global_Var_Global_VarL0"/>
+      <label kind="synchronisation">exit_hook_3!</label>
+    </transition>
+    <transition>
+      <source ref="Global_Var_Global_VarL3"/>
+      <target ref="Global_Var_Global_VarL3"/>
+      <label kind="synchronisation">retry_1?</label>
+      <label kind="assignment">y = 0</label>
+    </transition>
+    <transition>
+      <source ref="Global_Var_Global_VarL3"/>
+      <target ref="Global_Var_Global_VarL1"/>
+      <label kind="synchronisation">setX_1?</label>
+      <label kind="assignment">y = 0</label>
+    </transition>
+    <transition>
+      <source ref="Global_Var_Global_VarL3"/>
+      <target ref="Global_Var_Global_VarL3"/>
+      <label kind="synchronisation">retry_2?</label>
+      <label kind="assignment">y = 0</label>
+    </transition>
+    <transition>
+      <source ref="Global_Var_Global_VarL3"/>
+      <target ref="Global_Var_Global_VarL2"/>
+      <label kind="synchronisation">setX_2?</label>
+      <label kind="assignment">y = 0</label>
+    </transition>
+  </template>
+  <system>system Mutex,Process_1,Process_2,Process_3,Global_Var;</system>
+</nta>

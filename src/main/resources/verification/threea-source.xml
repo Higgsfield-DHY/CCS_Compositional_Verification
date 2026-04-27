@@ -1,0 +1,277 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE nta PUBLIC "-//Uppaal Team//DTD Flat System 1.1//EN" "http://www.it.uu.se/research/group/darts/uppaal/flat-1_1.dtd">
+
+<nta>
+  <declaration>clock x;
+chan a;
+const int INIT=0;
+const int SEEN_IN=1;
+const int ERROR=2;
+int obs=INIT;
+chan a_m1_to_m2;
+chan a_m2_to_m1;
+chan a_m1_int;
+chan a_m2_int;
+</declaration>  <template>    <name>M1_S1</name>
+    <declaration/>
+    <location id="M1_S1_M1_S1q0">
+      <name>q0</name>
+    </location>
+    <location id="M1_S1_M1_S1q1">
+      <name>q1</name>
+    </location>
+    <init ref="M1_S1_M1_S1q0"/>
+    <transition>
+      <source ref="M1_S1_M1_S1q0"/>
+      <target ref="M1_S1_M1_S1q1"/>
+      <label kind="synchronisation">a_m1_to_m2!</label>
+      <label kind="guard">x&gt;2 &amp;&amp; x&lt;=3 &amp;&amp; obs==SEEN_IN</label>
+      <label kind="assignment">x=0,obs=ERROR</label>
+    </transition>
+    <transition>
+      <source ref="M1_S1_M1_S1q0"/>
+      <target ref="M1_S1_M1_S1q1"/>
+      <label kind="synchronisation">a_m1_to_m2!</label>
+      <label kind="guard">x&gt;=1 &amp;&amp; x&lt;=2 &amp;&amp; obs==SEEN_IN</label>
+      <label kind="assignment">x=0</label>
+    </transition>
+    <transition>
+      <source ref="M1_S1_M1_S1q0"/>
+      <target ref="M1_S1_M1_S1q1"/>
+      <label kind="synchronisation">a_m1_to_m2!</label>
+      <label kind="guard">x&gt;=1 &amp;&amp; x&lt;=3 &amp;&amp; obs==INIT</label>
+      <label kind="assignment">x=0</label>
+    </transition>
+    <transition>
+      <source ref="M1_S1_M1_S1q0"/>
+      <target ref="M1_S1_M1_S1q1"/>
+      <label kind="synchronisation">a_m1_to_m2!</label>
+      <label kind="guard">x&gt;=1 &amp;&amp; x&lt;=3 &amp;&amp; obs==ERROR</label>
+      <label kind="assignment">x=0</label>
+    </transition>
+    <transition>
+      <source ref="M1_S1_M1_S1q0"/>
+      <target ref="M1_S1_M1_S1q1"/>
+      <label kind="synchronisation">a_m1_int!</label>
+      <label kind="guard">x&gt;2 &amp;&amp; x&lt;=3 &amp;&amp; obs==SEEN_IN</label>
+      <label kind="assignment">x=0,obs=ERROR</label>
+    </transition>
+    <transition>
+      <source ref="M1_S1_M1_S1q0"/>
+      <target ref="M1_S1_M1_S1q1"/>
+      <label kind="synchronisation">a_m1_int!</label>
+      <label kind="guard">x&gt;=1 &amp;&amp; x&lt;=2 &amp;&amp; obs==SEEN_IN</label>
+      <label kind="assignment">x=0</label>
+    </transition>
+    <transition>
+      <source ref="M1_S1_M1_S1q0"/>
+      <target ref="M1_S1_M1_S1q1"/>
+      <label kind="synchronisation">a_m1_int!</label>
+      <label kind="guard">x&gt;=1 &amp;&amp; x&lt;=3 &amp;&amp; obs==INIT</label>
+      <label kind="assignment">x=0</label>
+    </transition>
+    <transition>
+      <source ref="M1_S1_M1_S1q0"/>
+      <target ref="M1_S1_M1_S1q1"/>
+      <label kind="synchronisation">a_m1_int!</label>
+      <label kind="guard">x&gt;=1 &amp;&amp; x&lt;=3 &amp;&amp; obs==ERROR</label>
+      <label kind="assignment">x=0</label>
+    </transition>
+  </template>
+  <template>
+    <name>M1_R</name>
+    <declaration/>
+    <location id="M1_R_M1_Rq0">
+      <name>q0</name>
+    </location>
+    <location id="M1_R_M1_Rq1">
+      <name>q1</name>
+    </location>
+    <init ref="M1_R_M1_Rq0"/>
+    <transition>
+      <source ref="M1_R_M1_Rq0"/>
+      <target ref="M1_R_M1_Rq1"/>
+      <label kind="synchronisation">a_m2_to_m1?</label>
+      <label kind="guard">x==1 &amp;&amp; obs==INIT</label>
+      <label kind="assignment">x=0,obs=SEEN_IN</label>
+    </transition>
+    <transition>
+      <source ref="M1_R_M1_Rq0"/>
+      <target ref="M1_R_M1_Rq1"/>
+      <label kind="synchronisation">a_m2_to_m1?</label>
+      <label kind="guard">x==1 &amp;&amp; obs==SEEN_IN</label>
+      <label kind="assignment">x=0</label>
+    </transition>
+    <transition>
+      <source ref="M1_R_M1_Rq0"/>
+      <target ref="M1_R_M1_Rq1"/>
+      <label kind="synchronisation">a_m2_to_m1?</label>
+      <label kind="guard">x==1 &amp;&amp; obs==ERROR</label>
+      <label kind="assignment">x=0</label>
+    </transition>
+    <transition>
+      <source ref="M1_R_M1_Rq0"/>
+      <target ref="M1_R_M1_Rq1"/>
+      <label kind="synchronisation">a_m1_int?</label>
+      <label kind="guard">x==1 &amp;&amp; obs==INIT</label>
+      <label kind="assignment">x=0,obs=SEEN_IN</label>
+    </transition>
+    <transition>
+      <source ref="M1_R_M1_Rq0"/>
+      <target ref="M1_R_M1_Rq1"/>
+      <label kind="synchronisation">a_m1_int?</label>
+      <label kind="guard">x==1 &amp;&amp; obs==SEEN_IN</label>
+      <label kind="assignment">x=0</label>
+    </transition>
+    <transition>
+      <source ref="M1_R_M1_Rq0"/>
+      <target ref="M1_R_M1_Rq1"/>
+      <label kind="synchronisation">a_m1_int?</label>
+      <label kind="guard">x==1 &amp;&amp; obs==ERROR</label>
+      <label kind="assignment">x=0</label>
+    </transition>
+  </template>
+  <template>
+    <name>M1_S2</name>
+    <declaration/>
+    <location id="M1_S2_M1_S2q0">
+      <name>q0</name>
+    </location>
+    <location id="M1_S2_M1_S2q1">
+      <name>q1</name>
+    </location>
+    <init ref="M1_S2_M1_S2q0"/>
+    <transition>
+      <source ref="M1_S2_M1_S2q0"/>
+      <target ref="M1_S2_M1_S2q1"/>
+      <label kind="synchronisation">a_m1_to_m2!</label>
+      <label kind="guard">x&gt;2 &amp;&amp; x&lt;=3 &amp;&amp; obs==SEEN_IN</label>
+      <label kind="assignment">x=0,obs=ERROR</label>
+    </transition>
+    <transition>
+      <source ref="M1_S2_M1_S2q0"/>
+      <target ref="M1_S2_M1_S2q1"/>
+      <label kind="synchronisation">a_m1_to_m2!</label>
+      <label kind="guard">x&gt;=1 &amp;&amp; x&lt;=2 &amp;&amp; obs==SEEN_IN</label>
+      <label kind="assignment">x=0</label>
+    </transition>
+    <transition>
+      <source ref="M1_S2_M1_S2q0"/>
+      <target ref="M1_S2_M1_S2q1"/>
+      <label kind="synchronisation">a_m1_to_m2!</label>
+      <label kind="guard">x&gt;=1 &amp;&amp; x&lt;=3 &amp;&amp; obs==INIT</label>
+      <label kind="assignment">x=0</label>
+    </transition>
+    <transition>
+      <source ref="M1_S2_M1_S2q0"/>
+      <target ref="M1_S2_M1_S2q1"/>
+      <label kind="synchronisation">a_m1_to_m2!</label>
+      <label kind="guard">x&gt;=1 &amp;&amp; x&lt;=3 &amp;&amp; obs==ERROR</label>
+      <label kind="assignment">x=0</label>
+    </transition>
+    <transition>
+      <source ref="M1_S2_M1_S2q0"/>
+      <target ref="M1_S2_M1_S2q1"/>
+      <label kind="synchronisation">a_m1_int!</label>
+      <label kind="guard">x&gt;2 &amp;&amp; x&lt;=3 &amp;&amp; obs==SEEN_IN</label>
+      <label kind="assignment">x=0,obs=ERROR</label>
+    </transition>
+    <transition>
+      <source ref="M1_S2_M1_S2q0"/>
+      <target ref="M1_S2_M1_S2q1"/>
+      <label kind="synchronisation">a_m1_int!</label>
+      <label kind="guard">x&gt;=1 &amp;&amp; x&lt;=2 &amp;&amp; obs==SEEN_IN</label>
+      <label kind="assignment">x=0</label>
+    </transition>
+    <transition>
+      <source ref="M1_S2_M1_S2q0"/>
+      <target ref="M1_S2_M1_S2q1"/>
+      <label kind="synchronisation">a_m1_int!</label>
+      <label kind="guard">x&gt;=1 &amp;&amp; x&lt;=3 &amp;&amp; obs==INIT</label>
+      <label kind="assignment">x=0</label>
+    </transition>
+    <transition>
+      <source ref="M1_S2_M1_S2q0"/>
+      <target ref="M1_S2_M1_S2q1"/>
+      <label kind="synchronisation">a_m1_int!</label>
+      <label kind="guard">x&gt;=1 &amp;&amp; x&lt;=3 &amp;&amp; obs==ERROR</label>
+      <label kind="assignment">x=0</label>
+    </transition>
+  </template>
+  <template>
+    <name>M2_R1</name>
+    <declaration/>
+    <location id="M2_R1_M2_R1q0">
+      <name>q0</name>
+    </location>
+    <location id="M2_R1_M2_R1q1">
+      <name>q1</name>
+    </location>
+    <init ref="M2_R1_M2_R1q0"/>
+    <transition>
+      <source ref="M2_R1_M2_R1q0"/>
+      <target ref="M2_R1_M2_R1q1"/>
+      <label kind="synchronisation">a_m1_to_m2?</label>
+      <label kind="guard">x==2</label>
+      <label kind="assignment">x=0</label>
+    </transition>
+    <transition>
+      <source ref="M2_R1_M2_R1q0"/>
+      <target ref="M2_R1_M2_R1q1"/>
+      <label kind="synchronisation">a_m2_int?</label>
+      <label kind="guard">x==2</label>
+      <label kind="assignment">x=0</label>
+    </transition>
+  </template>
+  <template>
+    <name>M2_S</name>
+    <declaration/>
+    <location id="M2_S_M2_Sq0">
+      <name>q0</name>
+    </location>
+    <location id="M2_S_M2_Sq1">
+      <name>q1</name>
+    </location>
+    <init ref="M2_S_M2_Sq0"/>
+    <transition>
+      <source ref="M2_S_M2_Sq0"/>
+      <target ref="M2_S_M2_Sq1"/>
+      <label kind="synchronisation">a_m2_to_m1!</label>
+      <label kind="guard">x==1</label>
+      <label kind="assignment">x=0</label>
+    </transition>
+    <transition>
+      <source ref="M2_S_M2_Sq0"/>
+      <target ref="M2_S_M2_Sq1"/>
+      <label kind="synchronisation">a_m2_int!</label>
+      <label kind="guard">x==1</label>
+      <label kind="assignment">x=0</label>
+    </transition>
+  </template>
+  <template>
+    <name>M2_R2</name>
+    <declaration/>
+    <location id="M2_R2_M2_R2q0">
+      <name>q0</name>
+    </location>
+    <location id="M2_R2_M2_R2q1">
+      <name>q1</name>
+    </location>
+    <init ref="M2_R2_M2_R2q0"/>
+    <transition>
+      <source ref="M2_R2_M2_R2q0"/>
+      <target ref="M2_R2_M2_R2q1"/>
+      <label kind="synchronisation">a_m1_to_m2?</label>
+      <label kind="guard">x==2</label>
+      <label kind="assignment">x=0</label>
+    </transition>
+    <transition>
+      <source ref="M2_R2_M2_R2q0"/>
+      <target ref="M2_R2_M2_R2q1"/>
+      <label kind="synchronisation">a_m2_int?</label>
+      <label kind="guard">x==2</label>
+      <label kind="assignment">x=0</label>
+    </transition>
+  </template>
+  <system>system M1_S1,M1_R,M1_S2,M2_R1,M2_S,M2_R2;</system>
+</nta>

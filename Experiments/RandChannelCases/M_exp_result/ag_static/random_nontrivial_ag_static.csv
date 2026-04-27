@@ -1,0 +1,10 @@
+suiteId,caseId,family,suitePurpose,topologyKind,alphabetSize,caseProfile,showcaseTarget,variantId,modePattern,modeCount,burstLength,policy,verdict,status,match,tMeanMs,q,sigma,r,error
+"M4_nontrivial_learning","M4_pipe_q2r1","M4","PERFORMANCE","MID_BOUNDARY_PIPELINE_BUFFER",2,"Q2_R1","Q2_R1","","TWO_MODE",2,1,"STATIC_SIGMA","SAFE","PASS","YES",2960,4,2,1,
+"M4_nontrivial_learning","M4_pipe_q3r1","M4","PERFORMANCE","MID_BOUNDARY_PIPELINE_BUFFER",4,"Q3_R1","Q3_R1","","THREE_MODE",3,1,"STATIC_SIGMA","SAFE","PASS","YES",6352,4,4,1,
+"M4_nontrivial_learning","M4_pipe_q3r2","M4","PERFORMANCE","MID_BOUNDARY_PIPELINE_BUFFER",4,"Q3_R2","Q3_R2","","THREE_MODE",3,1,"STATIC_SIGMA","SAFE","PASS","YES",22622,4,4,3,
+"M4_nontrivial_learning","M4_sched_q2r1","M4","PERFORMANCE","MID_BOUNDARY_SCHED_BUFFER",2,"Q2_R1","Q2_R1","","TWO_MODE",2,1,"STATIC_SIGMA","SAFE","PASS","YES",3103,4,2,1,
+"M4_nontrivial_learning","M4_sched_q3r1","M4","PERFORMANCE","MID_BOUNDARY_SCHED_BUFFER",4,"Q3_R1","Q3_R1","","THREE_MODE",3,1,"STATIC_SIGMA","SAFE","PASS","YES",6524,4,4,1,
+"M4_nontrivial_learning","M4_sched_q3r2","M4","PERFORMANCE","MID_BOUNDARY_SCHED_BUFFER",4,"Q3_R2","Q3_R2","","THREE_MODE",3,1,"STATIC_SIGMA","SAFE","PASS","YES",17867,4,4,3,
+"M4_nontrivial_learning","M4_split_q2r1","M4","PERFORMANCE","MID_BOUNDARY_SPLIT_PIPELINE_BUFFER",2,"Q2_R1","Q2_R1","","TWO_MODE",2,1,"STATIC_SIGMA","SAFE","PASS","YES",3207,4,2,1,
+"M4_nontrivial_learning","M4_split_q3r1","M4","PERFORMANCE","MID_BOUNDARY_SPLIT_PIPELINE_BUFFER",4,"Q3_R1","Q3_R1","","THREE_MODE",3,1,"STATIC_SIGMA","SAFE","PASS","YES",6424,4,4,1,
+"M4_nontrivial_learning","M4_split_q3r2","M4","PERFORMANCE","MID_BOUNDARY_SPLIT_PIPELINE_BUFFER",4,"Q3_R2","Q3_R2","","THREE_MODE",3,1,"STATIC_SIGMA","SAFE","PASS","YES",23308,4,4,3,

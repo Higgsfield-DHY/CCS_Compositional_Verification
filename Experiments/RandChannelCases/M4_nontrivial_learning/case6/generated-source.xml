@@ -1,0 +1,321 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE nta PUBLIC "-//Uppaal Team//DTD Flat System 1.1//EN" "http://www.it.uu.se/research/group/darts/uppaal/flat-1_1.dtd">
+
+<nta>
+  <declaration>chan write1,read1,grant_w1,done_w1,handoff_w1,grant_r1,done_r1;
+chan read1_m1_to_m2;
+chan read1_m2_to_m1;
+chan read1_m1_int;
+chan read1_m2_int;
+</declaration>  <template>    <name>Buf</name>
+    <declaration>clock x;
+int count=0,len=2;
+</declaration>    <location id="Buf_Bufq0">      <name>q0</name>
+    </location>
+    <init ref="Buf_Bufq0"/>
+    <transition>
+      <source ref="Buf_Bufq0"/>
+      <target ref="Buf_Bufq0"/>
+      <label kind="synchronisation">write1?</label>
+      <label kind="guard">count &lt;= len</label>
+      <label kind="assignment">count = count + 1,x = 0</label>
+    </transition>
+    <transition>
+      <source ref="Buf_Bufq0"/>
+      <target ref="Buf_Bufq0"/>
+      <label kind="synchronisation">read1_m2_to_m1?</label>
+      <label kind="guard">count &gt; 0</label>
+      <label kind="assignment">count = count - 1,x = 0</label>
+    </transition>
+    <transition>
+      <source ref="Buf_Bufq0"/>
+      <target ref="Buf_Bufq0"/>
+      <label kind="synchronisation">read1_m1_int?</label>
+      <label kind="guard">count &gt; 0</label>
+      <label kind="assignment">count = count - 1,x = 0</label>
+    </transition>
+  </template>
+  <template>
+    <name>WriterCtrl1</name>
+    <declaration>clock x;
+</declaration>    <location id="WriterCtrl1_WriterCtrl1idle">      <name>idle</name>
+    </location>
+    <location id="WriterCtrl1_WriterCtrl1release">
+      <name>release</name>
+    </location>
+    <location id="WriterCtrl1_WriterCtrl1ready">
+      <name>ready</name>
+    </location>
+    <location id="WriterCtrl1_WriterCtrl1granted">
+      <name>granted</name>
+    </location>
+    <location id="WriterCtrl1_WriterCtrl1issued">
+      <name>issued</name>
+    </location>
+    <init ref="WriterCtrl1_WriterCtrl1idle"/>
+    <transition>
+      <source ref="WriterCtrl1_WriterCtrl1idle"/>
+      <target ref="WriterCtrl1_WriterCtrl1release"/>
+      <label kind="guard">x &gt;= 2 &amp;&amp; x &lt;= 2</label>
+      <label kind="assignment">x = 0</label>
+    </transition>
+    <transition>
+      <source ref="WriterCtrl1_WriterCtrl1release"/>
+      <target ref="WriterCtrl1_WriterCtrl1ready"/>
+      <label kind="guard">x &gt;= 2 &amp;&amp; x &lt;= 2</label>
+      <label kind="assignment">x = 0</label>
+    </transition>
+    <transition>
+      <source ref="WriterCtrl1_WriterCtrl1ready"/>
+      <target ref="WriterCtrl1_WriterCtrl1granted"/>
+      <label kind="synchronisation">grant_w1?</label>
+      <label kind="assignment">x = 0</label>
+    </transition>
+    <transition>
+      <source ref="WriterCtrl1_WriterCtrl1granted"/>
+      <target ref="WriterCtrl1_WriterCtrl1issued"/>
+      <label kind="synchronisation">handoff_w1!</label>
+      <label kind="guard">x &gt;= 2 &amp;&amp; x &lt;= 2</label>
+      <label kind="assignment">x = 0</label>
+    </transition>
+    <transition>
+      <source ref="WriterCtrl1_WriterCtrl1issued"/>
+      <target ref="WriterCtrl1_WriterCtrl1idle"/>
+      <label kind="guard">x &gt;= 3 &amp;&amp; x &lt;= 3</label>
+      <label kind="assignment">x = 0</label>
+    </transition>
+  </template>
+  <template>
+    <name>WriterCommit1</name>
+    <declaration>clock x;
+</declaration>    <location id="WriterCommit1_WriterCommit1wait">      <name>wait</name>
+    </location>
+    <location id="WriterCommit1_WriterCommit1loaded">
+      <name>loaded</name>
+    </location>
+    <location id="WriterCommit1_WriterCommit1ready">
+      <name>ready</name>
+    </location>
+    <location id="WriterCommit1_WriterCommit1fired">
+      <name>fired</name>
+    </location>
+    <init ref="WriterCommit1_WriterCommit1wait"/>
+    <transition>
+      <source ref="WriterCommit1_WriterCommit1wait"/>
+      <target ref="WriterCommit1_WriterCommit1loaded"/>
+      <label kind="synchronisation">handoff_w1?</label>
+      <label kind="assignment">x = 0</label>
+    </transition>
+    <transition>
+      <source ref="WriterCommit1_WriterCommit1loaded"/>
+      <target ref="WriterCommit1_WriterCommit1ready"/>
+      <label kind="guard">x &gt;= 2 &amp;&amp; x &lt;= 2</label>
+      <label kind="assignment">x = 0</label>
+    </transition>
+    <transition>
+      <source ref="WriterCommit1_WriterCommit1ready"/>
+      <target ref="WriterCommit1_WriterCommit1fired"/>
+      <label kind="synchronisation">write1!</label>
+      <label kind="guard">x &gt;= 3 &amp;&amp; x &lt;= 3</label>
+      <label kind="assignment">x = 0</label>
+    </transition>
+    <transition>
+      <source ref="WriterCommit1_WriterCommit1fired"/>
+      <target ref="WriterCommit1_WriterCommit1wait"/>
+      <label kind="synchronisation">done_w1!</label>
+      <label kind="assignment">x = 0</label>
+    </transition>
+  </template>
+  <template>
+    <name>ReaderCtrl1</name>
+    <declaration>clock x;
+</declaration>    <location id="ReaderCtrl1_ReaderCtrl1idle">      <name>idle</name>
+    </location>
+    <location id="ReaderCtrl1_ReaderCtrl1release">
+      <name>release</name>
+    </location>
+    <location id="ReaderCtrl1_ReaderCtrl1ready">
+      <name>ready</name>
+    </location>
+    <location id="ReaderCtrl1_ReaderCtrl1granted">
+      <name>granted</name>
+    </location>
+    <location id="ReaderCtrl1_ReaderCtrl1issued">
+      <name>issued</name>
+    </location>
+    <init ref="ReaderCtrl1_ReaderCtrl1idle"/>
+    <transition>
+      <source ref="ReaderCtrl1_ReaderCtrl1idle"/>
+      <target ref="ReaderCtrl1_ReaderCtrl1release"/>
+      <label kind="guard">x &gt;= 1 &amp;&amp; x &lt;= 1</label>
+      <label kind="assignment">x = 0</label>
+    </transition>
+    <transition>
+      <source ref="ReaderCtrl1_ReaderCtrl1release"/>
+      <target ref="ReaderCtrl1_ReaderCtrl1ready"/>
+      <label kind="guard">x &gt;= 1 &amp;&amp; x &lt;= 1</label>
+      <label kind="assignment">x = 0</label>
+    </transition>
+    <transition>
+      <source ref="ReaderCtrl1_ReaderCtrl1ready"/>
+      <target ref="ReaderCtrl1_ReaderCtrl1granted"/>
+      <label kind="synchronisation">grant_r1?</label>
+      <label kind="assignment">x = 0</label>
+    </transition>
+    <transition>
+      <source ref="ReaderCtrl1_ReaderCtrl1granted"/>
+      <target ref="ReaderCtrl1_ReaderCtrl1issued"/>
+      <label kind="synchronisation">read1_m2_to_m1!</label>
+      <label kind="guard">x &gt;= 1 &amp;&amp; x &lt;= 1</label>
+      <label kind="assignment">x = 0</label>
+    </transition>
+    <transition>
+      <source ref="ReaderCtrl1_ReaderCtrl1issued"/>
+      <target ref="ReaderCtrl1_ReaderCtrl1idle"/>
+      <label kind="guard">x &gt;= 2 &amp;&amp; x &lt;= 2</label>
+      <label kind="assignment">x = 0</label>
+    </transition>
+    <transition>
+      <source ref="ReaderCtrl1_ReaderCtrl1granted"/>
+      <target ref="ReaderCtrl1_ReaderCtrl1issued"/>
+      <label kind="synchronisation">read1_m2_int!</label>
+      <label kind="guard">x &gt;= 1 &amp;&amp; x &lt;= 1</label>
+      <label kind="assignment">x = 0</label>
+    </transition>
+  </template>
+  <template>
+    <name>ReaderCommit1</name>
+    <declaration>clock x;
+</declaration>    <location id="ReaderCommit1_ReaderCommit1wait">      <name>wait</name>
+    </location>
+    <location id="ReaderCommit1_ReaderCommit1loaded">
+      <name>loaded</name>
+    </location>
+    <location id="ReaderCommit1_ReaderCommit1ready">
+      <name>ready</name>
+    </location>
+    <location id="ReaderCommit1_ReaderCommit1fired">
+      <name>fired</name>
+    </location>
+    <init ref="ReaderCommit1_ReaderCommit1wait"/>
+    <transition>
+      <source ref="ReaderCommit1_ReaderCommit1wait"/>
+      <target ref="ReaderCommit1_ReaderCommit1loaded"/>
+      <label kind="synchronisation">read1_m1_to_m2?</label>
+      <label kind="assignment">x = 0</label>
+    </transition>
+    <transition>
+      <source ref="ReaderCommit1_ReaderCommit1loaded"/>
+      <target ref="ReaderCommit1_ReaderCommit1ready"/>
+      <label kind="guard">x &gt;= 1 &amp;&amp; x &lt;= 1</label>
+      <label kind="assignment">x = 0</label>
+    </transition>
+    <transition>
+      <source ref="ReaderCommit1_ReaderCommit1ready"/>
+      <target ref="ReaderCommit1_ReaderCommit1fired"/>
+      <label kind="synchronisation">read1_m2_to_m1!</label>
+      <label kind="guard">x &gt;= 1 &amp;&amp; x &lt;= 1</label>
+      <label kind="assignment">x = 0</label>
+    </transition>
+    <transition>
+      <source ref="ReaderCommit1_ReaderCommit1fired"/>
+      <target ref="ReaderCommit1_ReaderCommit1wait"/>
+      <label kind="synchronisation">done_r1!</label>
+      <label kind="assignment">x = 0</label>
+    </transition>
+    <transition>
+      <source ref="ReaderCommit1_ReaderCommit1wait"/>
+      <target ref="ReaderCommit1_ReaderCommit1loaded"/>
+      <label kind="synchronisation">read1_m2_int?</label>
+      <label kind="assignment">x = 0</label>
+    </transition>
+    <transition>
+      <source ref="ReaderCommit1_ReaderCommit1ready"/>
+      <target ref="ReaderCommit1_ReaderCommit1fired"/>
+      <label kind="synchronisation">read1_m2_int!</label>
+      <label kind="guard">x &gt;= 1 &amp;&amp; x &lt;= 1</label>
+      <label kind="assignment">x = 0</label>
+    </transition>
+  </template>
+  <template>
+    <name>Dispatcher</name>
+    <declaration>clock d;
+</declaration>    <location id="Dispatcher_Dispatchers0">      <name>s0</name>
+    </location>
+    <location id="Dispatcher_Dispatchers1">
+      <name>s1</name>
+    </location>
+    <location id="Dispatcher_Dispatchers2">
+      <name>s2</name>
+    </location>
+    <location id="Dispatcher_Dispatchers3">
+      <name>s3</name>
+    </location>
+    <location id="Dispatcher_Dispatcherw0">
+      <name>w0</name>
+    </location>
+    <location id="Dispatcher_Dispatcherw1">
+      <name>w1</name>
+    </location>
+    <location id="Dispatcher_Dispatcherw2">
+      <name>w2</name>
+    </location>
+    <location id="Dispatcher_Dispatcherw3">
+      <name>w3</name>
+    </location>
+    <init ref="Dispatcher_Dispatchers0"/>
+    <transition>
+      <source ref="Dispatcher_Dispatchers0"/>
+      <target ref="Dispatcher_Dispatcherw0"/>
+      <label kind="synchronisation">grant_w1!</label>
+      <label kind="guard">d &gt;= 2</label>
+      <label kind="assignment">d = 0</label>
+    </transition>
+    <transition>
+      <source ref="Dispatcher_Dispatcherw0"/>
+      <target ref="Dispatcher_Dispatchers1"/>
+      <label kind="synchronisation">done_w1?</label>
+      <label kind="assignment">d = 0</label>
+    </transition>
+    <transition>
+      <source ref="Dispatcher_Dispatchers1"/>
+      <target ref="Dispatcher_Dispatcherw1"/>
+      <label kind="synchronisation">grant_r1!</label>
+      <label kind="guard">d &gt;= 1</label>
+      <label kind="assignment">d = 0</label>
+    </transition>
+    <transition>
+      <source ref="Dispatcher_Dispatcherw1"/>
+      <target ref="Dispatcher_Dispatchers2"/>
+      <label kind="synchronisation">done_r1?</label>
+      <label kind="assignment">d = 0</label>
+    </transition>
+    <transition>
+      <source ref="Dispatcher_Dispatchers2"/>
+      <target ref="Dispatcher_Dispatcherw2"/>
+      <label kind="synchronisation">grant_w1!</label>
+      <label kind="guard">d &gt;= 2</label>
+      <label kind="assignment">d = 0</label>
+    </transition>
+    <transition>
+      <source ref="Dispatcher_Dispatcherw2"/>
+      <target ref="Dispatcher_Dispatchers3"/>
+      <label kind="synchronisation">done_w1?</label>
+      <label kind="assignment">d = 0</label>
+    </transition>
+    <transition>
+      <source ref="Dispatcher_Dispatchers3"/>
+      <target ref="Dispatcher_Dispatcherw3"/>
+      <label kind="synchronisation">grant_r1!</label>
+      <label kind="guard">d &gt;= 1</label>
+      <label kind="assignment">d = 0</label>
+    </transition>
+    <transition>
+      <source ref="Dispatcher_Dispatcherw3"/>
+      <target ref="Dispatcher_Dispatchers0"/>
+      <label kind="synchronisation">done_r1?</label>
+      <label kind="assignment">d = 0</label>
+    </transition>
+  </template>
+  <system>system Buf,WriterCtrl1,WriterCommit1,ReaderCtrl1,ReaderCommit1,Dispatcher;</system>
+</nta>

@@ -1,0 +1,229 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE nta PUBLIC "-//Uppaal Team//DTD Flat System 1.1//EN" "http://www.it.uu.se/research/group/darts/uppaal/flat-1_1.dtd">
+
+<nta>
+  <declaration>clock x;
+chan a,b,a_int;
+const int INIT=0;
+const int SEEN_A=1;
+const int SEEN_B=2;
+const int OK=3;
+const int ERROR=4;
+int obs=INIT;
+chan a_m1_to_m2;
+chan a_m2_to_m1;
+chan a_m1_int;
+chan a_m2_int;
+</declaration>  <template>    <name>H1</name>
+    <declaration/>
+    <location id="H1_H1q0">
+      <name>q0</name>
+    </location>
+    <location id="H1_H1q1">
+      <name>q1</name>
+    </location>
+    <init ref="H1_H1q0"/>
+    <transition>
+      <source ref="H1_H1q0"/>
+      <target ref="H1_H1q1"/>
+      <label kind="synchronisation">a_m1_to_m2!</label>
+      <label kind="guard">x&gt;=1 &amp;&amp; x&lt;=3 &amp;&amp; obs==INIT</label>
+      <label kind="assignment">x=0,obs=SEEN_A</label>
+    </transition>
+    <transition>
+      <source ref="H1_H1q0"/>
+      <target ref="H1_H1q1"/>
+      <label kind="synchronisation">a_m1_to_m2!</label>
+      <label kind="guard">x&gt;=1 &amp;&amp; x&lt;=3 &amp;&amp; obs==SEEN_B</label>
+      <label kind="assignment">x=0,obs=ERROR</label>
+    </transition>
+    <transition>
+      <source ref="H1_H1q0"/>
+      <target ref="H1_H1q1"/>
+      <label kind="synchronisation">a_m1_to_m2!</label>
+      <label kind="guard">x&gt;=1 &amp;&amp; x&lt;=3 &amp;&amp; obs==SEEN_A</label>
+      <label kind="assignment">x=0</label>
+    </transition>
+    <transition>
+      <source ref="H1_H1q0"/>
+      <target ref="H1_H1q1"/>
+      <label kind="synchronisation">a_m1_to_m2!</label>
+      <label kind="guard">x&gt;=1 &amp;&amp; x&lt;=3 &amp;&amp; obs==OK</label>
+      <label kind="assignment">x=0</label>
+    </transition>
+    <transition>
+      <source ref="H1_H1q0"/>
+      <target ref="H1_H1q1"/>
+      <label kind="synchronisation">a_m1_to_m2!</label>
+      <label kind="guard">x&gt;=1 &amp;&amp; x&lt;=3 &amp;&amp; obs==ERROR</label>
+      <label kind="assignment">x=0</label>
+    </transition>
+    <transition>
+      <source ref="H1_H1q0"/>
+      <target ref="H1_H1q1"/>
+      <label kind="synchronisation">a_m1_int!</label>
+      <label kind="guard">x&gt;=1 &amp;&amp; x&lt;=3 &amp;&amp; obs==INIT</label>
+      <label kind="assignment">x=0,obs=SEEN_A</label>
+    </transition>
+    <transition>
+      <source ref="H1_H1q0"/>
+      <target ref="H1_H1q1"/>
+      <label kind="synchronisation">a_m1_int!</label>
+      <label kind="guard">x&gt;=1 &amp;&amp; x&lt;=3 &amp;&amp; obs==SEEN_B</label>
+      <label kind="assignment">x=0,obs=ERROR</label>
+    </transition>
+    <transition>
+      <source ref="H1_H1q0"/>
+      <target ref="H1_H1q1"/>
+      <label kind="synchronisation">a_m1_int!</label>
+      <label kind="guard">x&gt;=1 &amp;&amp; x&lt;=3 &amp;&amp; obs==SEEN_A</label>
+      <label kind="assignment">x=0</label>
+    </transition>
+    <transition>
+      <source ref="H1_H1q0"/>
+      <target ref="H1_H1q1"/>
+      <label kind="synchronisation">a_m1_int!</label>
+      <label kind="guard">x&gt;=1 &amp;&amp; x&lt;=3 &amp;&amp; obs==OK</label>
+      <label kind="assignment">x=0</label>
+    </transition>
+    <transition>
+      <source ref="H1_H1q0"/>
+      <target ref="H1_H1q1"/>
+      <label kind="synchronisation">a_m1_int!</label>
+      <label kind="guard">x&gt;=1 &amp;&amp; x&lt;=3 &amp;&amp; obs==ERROR</label>
+      <label kind="assignment">x=0</label>
+    </transition>
+  </template>
+  <template>
+    <name>H2</name>
+    <declaration/>
+    <location id="H2_H2q0">
+      <name>q0</name>
+    </location>
+    <location id="H2_H2q1">
+      <name>q1</name>
+    </location>
+    <init ref="H2_H2q0"/>
+    <transition>
+      <source ref="H2_H2q0"/>
+      <target ref="H2_H2q1"/>
+      <label kind="synchronisation">b?</label>
+      <label kind="guard">x&gt;2 &amp;&amp; x&lt;=3 &amp;&amp; obs==INIT</label>
+      <label kind="assignment">obs=SEEN_B</label>
+    </transition>
+    <transition>
+      <source ref="H2_H2q0"/>
+      <target ref="H2_H2q1"/>
+      <label kind="synchronisation">b?</label>
+      <label kind="guard">x&gt;2 &amp;&amp; x&lt;=3 &amp;&amp; obs==SEEN_A</label>
+      <label kind="assignment">obs=OK</label>
+    </transition>
+    <transition>
+      <source ref="H2_H2q0"/>
+      <target ref="H2_H2q1"/>
+      <label kind="synchronisation">b?</label>
+      <label kind="guard">x&gt;2 &amp;&amp; x&lt;=3 &amp;&amp; obs==SEEN_B</label>
+    </transition>
+    <transition>
+      <source ref="H2_H2q0"/>
+      <target ref="H2_H2q1"/>
+      <label kind="synchronisation">b?</label>
+      <label kind="guard">x&gt;2 &amp;&amp; x&lt;=3 &amp;&amp; obs==OK</label>
+    </transition>
+    <transition>
+      <source ref="H2_H2q0"/>
+      <target ref="H2_H2q1"/>
+      <label kind="synchronisation">b?</label>
+      <label kind="guard">x&gt;2 &amp;&amp; x&lt;=3 &amp;&amp; obs==ERROR</label>
+    </transition>
+  </template>
+  <template>
+    <name>H3</name>
+    <declaration/>
+    <location id="H3_H3q0">
+      <name>q0</name>
+    </location>
+    <location id="H3_H3q1">
+      <name>q1</name>
+    </location>
+    <init ref="H3_H3q0"/>
+    <transition>
+      <source ref="H3_H3q0"/>
+      <target ref="H3_H3q1"/>
+      <label kind="synchronisation">a_m1_to_m2?</label>
+      <label kind="guard">x&gt;=1 &amp;&amp; x&lt;=2</label>
+      <label kind="assignment">x=0</label>
+    </transition>
+    <transition>
+      <source ref="H3_H3q0"/>
+      <target ref="H3_H3q1"/>
+      <label kind="synchronisation">a_m2_int?</label>
+      <label kind="guard">x&gt;=1 &amp;&amp; x&lt;=2</label>
+      <label kind="assignment">x=0</label>
+    </transition>
+  </template>
+  <template>
+    <name>H4</name>
+    <declaration/>
+    <location id="H4_H4q0">
+      <name>q0</name>
+    </location>
+    <location id="H4_H4q1">
+      <name>q1</name>
+    </location>
+    <init ref="H4_H4q0"/>
+    <transition>
+      <source ref="H4_H4q0"/>
+      <target ref="H4_H4q1"/>
+      <label kind="synchronisation">b!</label>
+      <label kind="guard">x&gt;2 &amp;&amp; x&lt;=3</label>
+    </transition>
+  </template>
+  <template>
+    <name>H5</name>
+    <declaration/>
+    <location id="H5_H5q0">
+      <name>q0</name>
+    </location>
+    <location id="H5_H5q1">
+      <name>q1</name>
+    </location>
+    <init ref="H5_H5q0"/>
+    <transition>
+      <source ref="H5_H5q0"/>
+      <target ref="H5_H5q1"/>
+      <label kind="synchronisation">a_m2_to_m1!</label>
+      <label kind="guard">x&gt;=1 &amp;&amp; x&lt;=2</label>
+    </transition>
+    <transition>
+      <source ref="H5_H5q0"/>
+      <target ref="H5_H5q1"/>
+      <label kind="synchronisation">a_m2_int!</label>
+      <label kind="guard">x&gt;=1 &amp;&amp; x&lt;=2</label>
+    </transition>
+  </template>
+  <template>
+    <name>H6</name>
+    <declaration/>
+    <location id="H6_H6q0">
+      <name>q0</name>
+    </location>
+    <location id="H6_H6q1">
+      <name>q1</name>
+    </location>
+    <init ref="H6_H6q0"/>
+    <transition>
+      <source ref="H6_H6q0"/>
+      <target ref="H6_H6q1"/>
+      <label kind="synchronisation">a_m1_to_m2?</label>
+      <label kind="guard">x&gt;=1 &amp;&amp; x&lt;=2</label>
+    </transition>
+    <transition>
+      <source ref="H6_H6q0"/>
+      <target ref="H6_H6q1"/>
+      <label kind="synchronisation">a_m2_int?</label>
+      <label kind="guard">x&gt;=1 &amp;&amp; x&lt;=2</label>
+    </transition>
+  </template>
+  <system>system H1,H2,H3,H4,H5,H6;</system>
+</nta>

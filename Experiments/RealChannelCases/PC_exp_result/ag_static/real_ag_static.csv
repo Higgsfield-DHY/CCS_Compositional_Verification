@@ -1,0 +1,4 @@
+group,caseId,sourceCase,property,m1,m2,structureGroup,partition,preprocess,policy,valid,verdict,status,match,tMeanMs,q,sigma,r,error
+"PC Channel","PC_1","pc.PcP1C3K2Source","A[] Buffer.count >= 0 && Buffer.count <= Buffer.len","Buffer","Producer_1+Consumer_1+Consumer_2+Consumer_3","M1-single/M2-multi","binary-channel adaptation","NONE","STATIC_SIGMA","Yes","SAFE","PASS","YES",375,1,2,0,
+"PC Channel","PC_2","pc.PcP1C3K2Source","A[] Buffer.count >= 0 && Buffer.count <= Buffer.len","Buffer+Producer_1","Consumer_1+Consumer_2+Consumer_3","M1-multi/M2-multi","producer internal to M1","NONE","STATIC_SIGMA","Yes","SAFE","PASS","YES",290,1,1,0,
+"PC Channel","PC_3","pc.PcP1C3K2Source","A[] Buffer.count >= 0 && Buffer.count <= Buffer.len","Buffer+Consumer_1+Consumer_2+Consumer_3","Producer_1","M1-multi/M2-single","all consumers internal to M1","NONE","STATIC_SIGMA","Yes","SAFE","PASS","YES",283,1,1,0,

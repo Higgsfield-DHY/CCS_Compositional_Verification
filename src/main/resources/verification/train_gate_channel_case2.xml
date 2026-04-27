@@ -1,0 +1,645 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE nta PUBLIC "-//Uppaal Team//DTD Flat System 1.1//EN" "http://www.it.uu.se/research/group/darts/uppaal/flat-1_1.dtd">
+
+<nta>
+  <declaration>const int N=9;
+int[0,N] el=0;
+chan appr,stop,go,leave,empty,notempty,hd,add,rem;
+</declaration>  <template>    <name>Gate</name>
+    <declaration/>
+    <location id="Gate_GateFree">
+      <name>Free</name>
+      <committed/>
+    </location>
+    <location id="Gate_GateWaitFirst">
+      <name>WaitFirst</name>
+    </location>
+    <location id="Gate_GateHead">
+      <name>Head</name>
+      <committed/>
+    </location>
+    <location id="Gate_GateSend">
+      <name>Send</name>
+      <committed/>
+    </location>
+    <location id="Gate_GateOcc">
+      <name>Occ</name>
+    </location>
+    <location id="Gate_GateAddEmpty">
+      <name>AddEmpty</name>
+      <committed/>
+    </location>
+    <location id="Gate_GateStopTrain">
+      <name>StopTrain</name>
+      <committed/>
+    </location>
+    <location id="Gate_GateAddOcc">
+      <name>AddOcc</name>
+      <committed/>
+    </location>
+    <location id="Gate_GateLeaveHook">
+      <name>LeaveHook</name>
+      <committed/>
+    </location>
+    <init ref="Gate_GateFree"/>
+    <transition>
+      <source ref="Gate_GateFree"/>
+      <target ref="Gate_GateHead"/>
+      <label kind="synchronisation">notempty?</label>
+    </transition>
+    <transition>
+      <source ref="Gate_GateFree"/>
+      <target ref="Gate_GateWaitFirst"/>
+      <label kind="synchronisation">empty?</label>
+    </transition>
+    <transition>
+      <source ref="Gate_GateHead"/>
+      <target ref="Gate_GateSend"/>
+      <label kind="synchronisation">hd!</label>
+    </transition>
+    <transition>
+      <source ref="Gate_GateSend"/>
+      <target ref="Gate_GateOcc"/>
+      <label kind="synchronisation">go!</label>
+    </transition>
+    <transition>
+      <source ref="Gate_GateWaitFirst"/>
+      <target ref="Gate_GateAddEmpty"/>
+      <label kind="synchronisation">appr?</label>
+    </transition>
+    <transition>
+      <source ref="Gate_GateAddEmpty"/>
+      <target ref="Gate_GateOcc"/>
+      <label kind="synchronisation">add!</label>
+    </transition>
+    <transition>
+      <source ref="Gate_GateOcc"/>
+      <target ref="Gate_GateStopTrain"/>
+      <label kind="synchronisation">appr?</label>
+    </transition>
+    <transition>
+      <source ref="Gate_GateStopTrain"/>
+      <target ref="Gate_GateAddOcc"/>
+      <label kind="synchronisation">stop!</label>
+    </transition>
+    <transition>
+      <source ref="Gate_GateAddOcc"/>
+      <target ref="Gate_GateOcc"/>
+      <label kind="synchronisation">add!</label>
+    </transition>
+    <transition>
+      <source ref="Gate_GateOcc"/>
+      <target ref="Gate_GateLeaveHook"/>
+      <label kind="synchronisation">leave?</label>
+    </transition>
+    <transition>
+      <source ref="Gate_GateLeaveHook"/>
+      <target ref="Gate_GateFree"/>
+      <label kind="synchronisation">rem?</label>
+    </transition>
+  </template>
+  <template>
+    <name>Queue</name>
+    <declaration>int[0,N] list[N],len=0,i=0;
+</declaration>    <location id="Queue_QueueStart">      <name>Start</name>
+    </location>
+    <location id="Queue_QueueShiftdown">
+      <name>Shiftdown</name>
+      <committed/>
+    </location>
+    <init ref="Queue_QueueStart"/>
+    <transition>
+      <source ref="Queue_QueueStart"/>
+      <target ref="Queue_QueueStart"/>
+      <label kind="synchronisation">empty!</label>
+      <label kind="guard">len==0</label>
+    </transition>
+    <transition>
+      <source ref="Queue_QueueStart"/>
+      <target ref="Queue_QueueStart"/>
+      <label kind="synchronisation">notempty!</label>
+      <label kind="guard">len&gt;0</label>
+    </transition>
+    <transition>
+      <source ref="Queue_QueueStart"/>
+      <target ref="Queue_QueueStart"/>
+      <label kind="synchronisation">add?</label>
+      <label kind="guard">len &lt; N</label>
+      <label kind="assignment">list[len]=el,len=len+1</label>
+    </transition>
+    <transition>
+      <source ref="Queue_QueueStart"/>
+      <target ref="Queue_QueueStart"/>
+      <label kind="synchronisation">hd?</label>
+      <label kind="assignment">el=list[0]</label>
+    </transition>
+    <transition>
+      <source ref="Queue_QueueStart"/>
+      <target ref="Queue_QueueShiftdown"/>
+      <label kind="synchronisation">rem!</label>
+      <label kind="guard">len&gt;=1</label>
+      <label kind="assignment">len=len-1,i=0</label>
+    </transition>
+    <transition>
+      <source ref="Queue_QueueShiftdown"/>
+      <target ref="Queue_QueueShiftdown"/>
+      <label kind="guard">i&lt;len</label>
+      <label kind="assignment">list[i]=list[i+1],i=i+1</label>
+    </transition>
+    <transition>
+      <source ref="Queue_QueueShiftdown"/>
+      <target ref="Queue_QueueStart"/>
+      <label kind="guard">len==i</label>
+      <label kind="assignment">list[i]=0,i=0</label>
+    </transition>
+  </template>
+  <template>
+    <name>Train_1</name>
+    <declaration>clock x;
+</declaration>    <location id="Train_1_Train_1Safe">      <name>Safe</name>
+    </location>
+    <location id="Train_1_Train_1Appr">
+      <name>Appr</name>
+      <label kind="invariant">x&lt;=20</label>
+    </location>
+    <location id="Train_1_Train_1Stop">
+      <name>Stop</name>
+    </location>
+    <location id="Train_1_Train_1Start">
+      <name>Start</name>
+      <label kind="invariant">x&lt;=15</label>
+    </location>
+    <location id="Train_1_Train_1Cross">
+      <name>Cross</name>
+      <label kind="invariant">x&lt;=5</label>
+    </location>
+    <init ref="Train_1_Train_1Safe"/>
+    <transition>
+      <source ref="Train_1_Train_1Safe"/>
+      <target ref="Train_1_Train_1Appr"/>
+      <label kind="synchronisation">appr!</label>
+      <label kind="assignment">el=1,x=0</label>
+    </transition>
+    <transition>
+      <source ref="Train_1_Train_1Appr"/>
+      <target ref="Train_1_Train_1Cross"/>
+      <label kind="guard">x&gt;=10</label>
+      <label kind="assignment">x=0</label>
+    </transition>
+    <transition>
+      <source ref="Train_1_Train_1Appr"/>
+      <target ref="Train_1_Train_1Stop"/>
+      <label kind="synchronisation">stop?</label>
+      <label kind="guard">x&lt;=10 &amp;&amp; el==1</label>
+      <label kind="assignment">x=0</label>
+    </transition>
+    <transition>
+      <source ref="Train_1_Train_1Stop"/>
+      <target ref="Train_1_Train_1Start"/>
+      <label kind="synchronisation">go?</label>
+      <label kind="guard">el==1</label>
+      <label kind="assignment">x=0</label>
+    </transition>
+    <transition>
+      <source ref="Train_1_Train_1Start"/>
+      <target ref="Train_1_Train_1Cross"/>
+      <label kind="guard">x&gt;=7</label>
+      <label kind="assignment">x=0</label>
+    </transition>
+    <transition>
+      <source ref="Train_1_Train_1Cross"/>
+      <target ref="Train_1_Train_1Safe"/>
+      <label kind="synchronisation">leave!</label>
+      <label kind="guard">x&gt;=3</label>
+      <label kind="assignment">el=1,x=0</label>
+    </transition>
+  </template>
+  <template>
+    <name>Train_2</name>
+    <declaration>clock x;
+</declaration>    <location id="Train_2_Train_2Safe">      <name>Safe</name>
+    </location>
+    <location id="Train_2_Train_2Appr">
+      <name>Appr</name>
+      <label kind="invariant">x&lt;=20</label>
+    </location>
+    <location id="Train_2_Train_2Stop">
+      <name>Stop</name>
+    </location>
+    <location id="Train_2_Train_2Start">
+      <name>Start</name>
+      <label kind="invariant">x&lt;=15</label>
+    </location>
+    <location id="Train_2_Train_2Cross">
+      <name>Cross</name>
+      <label kind="invariant">x&lt;=5</label>
+    </location>
+    <init ref="Train_2_Train_2Safe"/>
+    <transition>
+      <source ref="Train_2_Train_2Safe"/>
+      <target ref="Train_2_Train_2Appr"/>
+      <label kind="synchronisation">appr!</label>
+      <label kind="assignment">el=2,x=0</label>
+    </transition>
+    <transition>
+      <source ref="Train_2_Train_2Appr"/>
+      <target ref="Train_2_Train_2Cross"/>
+      <label kind="guard">x&gt;=10</label>
+      <label kind="assignment">x=0</label>
+    </transition>
+    <transition>
+      <source ref="Train_2_Train_2Appr"/>
+      <target ref="Train_2_Train_2Stop"/>
+      <label kind="synchronisation">stop?</label>
+      <label kind="guard">x&lt;=10 &amp;&amp; el==2</label>
+      <label kind="assignment">x=0</label>
+    </transition>
+    <transition>
+      <source ref="Train_2_Train_2Stop"/>
+      <target ref="Train_2_Train_2Start"/>
+      <label kind="synchronisation">go?</label>
+      <label kind="guard">el==2</label>
+      <label kind="assignment">x=0</label>
+    </transition>
+    <transition>
+      <source ref="Train_2_Train_2Start"/>
+      <target ref="Train_2_Train_2Cross"/>
+      <label kind="guard">x&gt;=7</label>
+      <label kind="assignment">x=0</label>
+    </transition>
+    <transition>
+      <source ref="Train_2_Train_2Cross"/>
+      <target ref="Train_2_Train_2Safe"/>
+      <label kind="synchronisation">leave!</label>
+      <label kind="guard">x&gt;=3</label>
+      <label kind="assignment">el=2,x=0</label>
+    </transition>
+  </template>
+  <template>
+    <name>Train_3</name>
+    <declaration>clock x;
+</declaration>    <location id="Train_3_Train_3Safe">      <name>Safe</name>
+    </location>
+    <location id="Train_3_Train_3Appr">
+      <name>Appr</name>
+      <label kind="invariant">x&lt;=20</label>
+    </location>
+    <location id="Train_3_Train_3Stop">
+      <name>Stop</name>
+    </location>
+    <location id="Train_3_Train_3Start">
+      <name>Start</name>
+      <label kind="invariant">x&lt;=15</label>
+    </location>
+    <location id="Train_3_Train_3Cross">
+      <name>Cross</name>
+      <label kind="invariant">x&lt;=5</label>
+    </location>
+    <init ref="Train_3_Train_3Safe"/>
+    <transition>
+      <source ref="Train_3_Train_3Safe"/>
+      <target ref="Train_3_Train_3Appr"/>
+      <label kind="synchronisation">appr!</label>
+      <label kind="assignment">el=3,x=0</label>
+    </transition>
+    <transition>
+      <source ref="Train_3_Train_3Appr"/>
+      <target ref="Train_3_Train_3Cross"/>
+      <label kind="guard">x&gt;=10</label>
+      <label kind="assignment">x=0</label>
+    </transition>
+    <transition>
+      <source ref="Train_3_Train_3Appr"/>
+      <target ref="Train_3_Train_3Stop"/>
+      <label kind="synchronisation">stop?</label>
+      <label kind="guard">x&lt;=10 &amp;&amp; el==3</label>
+      <label kind="assignment">x=0</label>
+    </transition>
+    <transition>
+      <source ref="Train_3_Train_3Stop"/>
+      <target ref="Train_3_Train_3Start"/>
+      <label kind="synchronisation">go?</label>
+      <label kind="guard">el==3</label>
+      <label kind="assignment">x=0</label>
+    </transition>
+    <transition>
+      <source ref="Train_3_Train_3Start"/>
+      <target ref="Train_3_Train_3Cross"/>
+      <label kind="guard">x&gt;=7</label>
+      <label kind="assignment">x=0</label>
+    </transition>
+    <transition>
+      <source ref="Train_3_Train_3Cross"/>
+      <target ref="Train_3_Train_3Safe"/>
+      <label kind="synchronisation">leave!</label>
+      <label kind="guard">x&gt;=3</label>
+      <label kind="assignment">el=3,x=0</label>
+    </transition>
+  </template>
+  <template>
+    <name>Train_4</name>
+    <declaration>clock x;
+</declaration>    <location id="Train_4_Train_4Safe">      <name>Safe</name>
+    </location>
+    <location id="Train_4_Train_4Appr">
+      <name>Appr</name>
+      <label kind="invariant">x&lt;=20</label>
+    </location>
+    <location id="Train_4_Train_4Stop">
+      <name>Stop</name>
+    </location>
+    <location id="Train_4_Train_4Start">
+      <name>Start</name>
+      <label kind="invariant">x&lt;=15</label>
+    </location>
+    <location id="Train_4_Train_4Cross">
+      <name>Cross</name>
+      <label kind="invariant">x&lt;=5</label>
+    </location>
+    <init ref="Train_4_Train_4Safe"/>
+    <transition>
+      <source ref="Train_4_Train_4Safe"/>
+      <target ref="Train_4_Train_4Appr"/>
+      <label kind="synchronisation">appr!</label>
+      <label kind="assignment">el=4,x=0</label>
+    </transition>
+    <transition>
+      <source ref="Train_4_Train_4Appr"/>
+      <target ref="Train_4_Train_4Cross"/>
+      <label kind="guard">x&gt;=10</label>
+      <label kind="assignment">x=0</label>
+    </transition>
+    <transition>
+      <source ref="Train_4_Train_4Appr"/>
+      <target ref="Train_4_Train_4Stop"/>
+      <label kind="synchronisation">stop?</label>
+      <label kind="guard">x&lt;=10 &amp;&amp; el==4</label>
+      <label kind="assignment">x=0</label>
+    </transition>
+    <transition>
+      <source ref="Train_4_Train_4Stop"/>
+      <target ref="Train_4_Train_4Start"/>
+      <label kind="synchronisation">go?</label>
+      <label kind="guard">el==4</label>
+      <label kind="assignment">x=0</label>
+    </transition>
+    <transition>
+      <source ref="Train_4_Train_4Start"/>
+      <target ref="Train_4_Train_4Cross"/>
+      <label kind="guard">x&gt;=7</label>
+      <label kind="assignment">x=0</label>
+    </transition>
+    <transition>
+      <source ref="Train_4_Train_4Cross"/>
+      <target ref="Train_4_Train_4Safe"/>
+      <label kind="synchronisation">leave!</label>
+      <label kind="guard">x&gt;=3</label>
+      <label kind="assignment">el=4,x=0</label>
+    </transition>
+  </template>
+  <template>
+    <name>Train_5</name>
+    <declaration>clock x;
+</declaration>    <location id="Train_5_Train_5Safe">      <name>Safe</name>
+    </location>
+    <location id="Train_5_Train_5Appr">
+      <name>Appr</name>
+      <label kind="invariant">x&lt;=20</label>
+    </location>
+    <location id="Train_5_Train_5Stop">
+      <name>Stop</name>
+    </location>
+    <location id="Train_5_Train_5Start">
+      <name>Start</name>
+      <label kind="invariant">x&lt;=15</label>
+    </location>
+    <location id="Train_5_Train_5Cross">
+      <name>Cross</name>
+      <label kind="invariant">x&lt;=5</label>
+    </location>
+    <init ref="Train_5_Train_5Safe"/>
+    <transition>
+      <source ref="Train_5_Train_5Safe"/>
+      <target ref="Train_5_Train_5Appr"/>
+      <label kind="synchronisation">appr!</label>
+      <label kind="assignment">el=5,x=0</label>
+    </transition>
+    <transition>
+      <source ref="Train_5_Train_5Appr"/>
+      <target ref="Train_5_Train_5Cross"/>
+      <label kind="guard">x&gt;=10</label>
+      <label kind="assignment">x=0</label>
+    </transition>
+    <transition>
+      <source ref="Train_5_Train_5Appr"/>
+      <target ref="Train_5_Train_5Stop"/>
+      <label kind="synchronisation">stop?</label>
+      <label kind="guard">x&lt;=10 &amp;&amp; el==5</label>
+      <label kind="assignment">x=0</label>
+    </transition>
+    <transition>
+      <source ref="Train_5_Train_5Stop"/>
+      <target ref="Train_5_Train_5Start"/>
+      <label kind="synchronisation">go?</label>
+      <label kind="guard">el==5</label>
+      <label kind="assignment">x=0</label>
+    </transition>
+    <transition>
+      <source ref="Train_5_Train_5Start"/>
+      <target ref="Train_5_Train_5Cross"/>
+      <label kind="guard">x&gt;=7</label>
+      <label kind="assignment">x=0</label>
+    </transition>
+    <transition>
+      <source ref="Train_5_Train_5Cross"/>
+      <target ref="Train_5_Train_5Safe"/>
+      <label kind="synchronisation">leave!</label>
+      <label kind="guard">x&gt;=3</label>
+      <label kind="assignment">el=5,x=0</label>
+    </transition>
+  </template>
+  <template>
+    <name>Train_6</name>
+    <declaration>clock x;
+</declaration>    <location id="Train_6_Train_6Safe">      <name>Safe</name>
+    </location>
+    <location id="Train_6_Train_6Appr">
+      <name>Appr</name>
+      <label kind="invariant">x&lt;=20</label>
+    </location>
+    <location id="Train_6_Train_6Stop">
+      <name>Stop</name>
+    </location>
+    <location id="Train_6_Train_6Start">
+      <name>Start</name>
+      <label kind="invariant">x&lt;=15</label>
+    </location>
+    <location id="Train_6_Train_6Cross">
+      <name>Cross</name>
+      <label kind="invariant">x&lt;=5</label>
+    </location>
+    <init ref="Train_6_Train_6Safe"/>
+    <transition>
+      <source ref="Train_6_Train_6Safe"/>
+      <target ref="Train_6_Train_6Appr"/>
+      <label kind="synchronisation">appr!</label>
+      <label kind="assignment">el=6,x=0</label>
+    </transition>
+    <transition>
+      <source ref="Train_6_Train_6Appr"/>
+      <target ref="Train_6_Train_6Cross"/>
+      <label kind="guard">x&gt;=10</label>
+      <label kind="assignment">x=0</label>
+    </transition>
+    <transition>
+      <source ref="Train_6_Train_6Appr"/>
+      <target ref="Train_6_Train_6Stop"/>
+      <label kind="synchronisation">stop?</label>
+      <label kind="guard">x&lt;=10 &amp;&amp; el==6</label>
+      <label kind="assignment">x=0</label>
+    </transition>
+    <transition>
+      <source ref="Train_6_Train_6Stop"/>
+      <target ref="Train_6_Train_6Start"/>
+      <label kind="synchronisation">go?</label>
+      <label kind="guard">el==6</label>
+      <label kind="assignment">x=0</label>
+    </transition>
+    <transition>
+      <source ref="Train_6_Train_6Start"/>
+      <target ref="Train_6_Train_6Cross"/>
+      <label kind="guard">x&gt;=7</label>
+      <label kind="assignment">x=0</label>
+    </transition>
+    <transition>
+      <source ref="Train_6_Train_6Cross"/>
+      <target ref="Train_6_Train_6Safe"/>
+      <label kind="synchronisation">leave!</label>
+      <label kind="guard">x&gt;=3</label>
+      <label kind="assignment">el=6,x=0</label>
+    </transition>
+  </template>
+  <template>
+    <name>Train_7</name>
+    <declaration>clock x;
+</declaration>    <location id="Train_7_Train_7Safe">      <name>Safe</name>
+    </location>
+    <location id="Train_7_Train_7Appr">
+      <name>Appr</name>
+      <label kind="invariant">x&lt;=20</label>
+    </location>
+    <location id="Train_7_Train_7Stop">
+      <name>Stop</name>
+    </location>
+    <location id="Train_7_Train_7Start">
+      <name>Start</name>
+      <label kind="invariant">x&lt;=15</label>
+    </location>
+    <location id="Train_7_Train_7Cross">
+      <name>Cross</name>
+      <label kind="invariant">x&lt;=5</label>
+    </location>
+    <init ref="Train_7_Train_7Safe"/>
+    <transition>
+      <source ref="Train_7_Train_7Safe"/>
+      <target ref="Train_7_Train_7Appr"/>
+      <label kind="synchronisation">appr!</label>
+      <label kind="assignment">el=7,x=0</label>
+    </transition>
+    <transition>
+      <source ref="Train_7_Train_7Appr"/>
+      <target ref="Train_7_Train_7Cross"/>
+      <label kind="guard">x&gt;=10</label>
+      <label kind="assignment">x=0</label>
+    </transition>
+    <transition>
+      <source ref="Train_7_Train_7Appr"/>
+      <target ref="Train_7_Train_7Stop"/>
+      <label kind="synchronisation">stop?</label>
+      <label kind="guard">x&lt;=10 &amp;&amp; el==7</label>
+      <label kind="assignment">x=0</label>
+    </transition>
+    <transition>
+      <source ref="Train_7_Train_7Stop"/>
+      <target ref="Train_7_Train_7Start"/>
+      <label kind="synchronisation">go?</label>
+      <label kind="guard">el==7</label>
+      <label kind="assignment">x=0</label>
+    </transition>
+    <transition>
+      <source ref="Train_7_Train_7Start"/>
+      <target ref="Train_7_Train_7Cross"/>
+      <label kind="guard">x&gt;=7</label>
+      <label kind="assignment">x=0</label>
+    </transition>
+    <transition>
+      <source ref="Train_7_Train_7Cross"/>
+      <target ref="Train_7_Train_7Safe"/>
+      <label kind="synchronisation">leave!</label>
+      <label kind="guard">x&gt;=3</label>
+      <label kind="assignment">el=7,x=0</label>
+    </transition>
+  </template>
+  <template>
+    <name>Train_8</name>
+    <declaration>clock x;
+</declaration>    <location id="Train_8_Train_8Safe">      <name>Safe</name>
+    </location>
+    <location id="Train_8_Train_8Appr">
+      <name>Appr</name>
+      <label kind="invariant">x&lt;=20</label>
+    </location>
+    <location id="Train_8_Train_8Stop">
+      <name>Stop</name>
+    </location>
+    <location id="Train_8_Train_8Start">
+      <name>Start</name>
+      <label kind="invariant">x&lt;=15</label>
+    </location>
+    <location id="Train_8_Train_8Cross">
+      <name>Cross</name>
+      <label kind="invariant">x&lt;=5</label>
+    </location>
+    <init ref="Train_8_Train_8Safe"/>
+    <transition>
+      <source ref="Train_8_Train_8Safe"/>
+      <target ref="Train_8_Train_8Appr"/>
+      <label kind="synchronisation">appr!</label>
+      <label kind="assignment">el=8,x=0</label>
+    </transition>
+    <transition>
+      <source ref="Train_8_Train_8Appr"/>
+      <target ref="Train_8_Train_8Cross"/>
+      <label kind="guard">x&gt;=10</label>
+      <label kind="assignment">x=0</label>
+    </transition>
+    <transition>
+      <source ref="Train_8_Train_8Appr"/>
+      <target ref="Train_8_Train_8Stop"/>
+      <label kind="synchronisation">stop?</label>
+      <label kind="guard">x&lt;=10 &amp;&amp; el==8</label>
+      <label kind="assignment">x=0</label>
+    </transition>
+    <transition>
+      <source ref="Train_8_Train_8Stop"/>
+      <target ref="Train_8_Train_8Start"/>
+      <label kind="synchronisation">go?</label>
+      <label kind="guard">el==8</label>
+      <label kind="assignment">x=0</label>
+    </transition>
+    <transition>
+      <source ref="Train_8_Train_8Start"/>
+      <target ref="Train_8_Train_8Cross"/>
+      <label kind="guard">x&gt;=7</label>
+      <label kind="assignment">x=0</label>
+    </transition>
+    <transition>
+      <source ref="Train_8_Train_8Cross"/>
+      <target ref="Train_8_Train_8Safe"/>
+      <label kind="synchronisation">leave!</label>
+      <label kind="guard">x&gt;=3</label>
+      <label kind="assignment">el=8,x=0</label>
+    </transition>
+  </template>
+  <system>system Gate,Queue,Train_1,Train_2,Train_3,Train_4,Train_5,Train_6,Train_7,Train_8;</system>
+</nta>

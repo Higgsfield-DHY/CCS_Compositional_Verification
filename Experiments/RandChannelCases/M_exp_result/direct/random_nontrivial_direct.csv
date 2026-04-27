@@ -1,0 +1,10 @@
+suiteId,caseId,family,suitePurpose,topologyKind,alphabetSize,caseProfile,showcaseTarget,variantId,modePattern,modeCount,burstLength,verdict,status,tMeanMs,error
+"M4_nontrivial_learning","M4_pipe_q2r1","M4","PERFORMANCE","MID_BOUNDARY_PIPELINE_BUFFER",2,"Q2_R1","Q2_R1","","TWO_MODE",2,1,"SAFE","PASS",1162,
+"M4_nontrivial_learning","M4_pipe_q3r1","M4","PERFORMANCE","MID_BOUNDARY_PIPELINE_BUFFER",4,"Q3_R1","Q3_R1","","THREE_MODE",3,1,"SAFE","PASS",155,
+"M4_nontrivial_learning","M4_pipe_q3r2","M4","PERFORMANCE","MID_BOUNDARY_PIPELINE_BUFFER",4,"Q3_R2","Q3_R2","","THREE_MODE",3,1,"SAFE","PASS",1089,
+"M4_nontrivial_learning","M4_sched_q2r1","M4","PERFORMANCE","MID_BOUNDARY_SCHED_BUFFER",2,"Q2_R1","Q2_R1","","TWO_MODE",2,1,"SAFE","PASS",161,
+"M4_nontrivial_learning","M4_sched_q3r1","M4","PERFORMANCE","MID_BOUNDARY_SCHED_BUFFER",4,"Q3_R1","Q3_R1","","THREE_MODE",3,1,"SAFE","PASS",283,
+"M4_nontrivial_learning","M4_sched_q3r2","M4","PERFORMANCE","MID_BOUNDARY_SCHED_BUFFER",4,"Q3_R2","Q3_R2","","THREE_MODE",3,1,"SAFE","PASS",981,
+"M4_nontrivial_learning","M4_split_q2r1","M4","PERFORMANCE","MID_BOUNDARY_SPLIT_PIPELINE_BUFFER",2,"Q2_R1","Q2_R1","","TWO_MODE",2,1,"SAFE","PASS",174,
+"M4_nontrivial_learning","M4_split_q3r1","M4","PERFORMANCE","MID_BOUNDARY_SPLIT_PIPELINE_BUFFER",4,"Q3_R1","Q3_R1","","THREE_MODE",3,1,"SAFE","PASS",170,
+"M4_nontrivial_learning","M4_split_q3r2","M4","PERFORMANCE","MID_BOUNDARY_SPLIT_PIPELINE_BUFFER",4,"Q3_R2","Q3_R2","","THREE_MODE",3,1,"SAFE","PASS",1274,
