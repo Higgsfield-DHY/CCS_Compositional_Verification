@@ -1,47 +1,50 @@
-# CCS Compositional Verification
+# CCS 风格时间系统的组合验证
 
-This repository contains the implementation and experiment artifacts for my undergraduate thesis on **model-learning-based compositional verification of CCS-style timed systems**.
+本仓库为本科毕业论文相关代码与实验数据仓库，对应的研究主题为**基于模型学习的 CCS 风格时间系统组合验证**。
 
-## Overview
+## 项目简介
 
-The project studies compositional verification for CCS-style timed systems with binary-channel synchronization. The core idea is to combine:
+针对 CCS 风格时间系统缺乏自动化组合验证方法的问题，本项目以假设保证推理为基础，结合模型学习技术，研究复杂时间系统中的环境假设自动构造问题。项目面向采用二元信道同步语义的时间自动机网络，围绕以下内容展开实现：
 
-- assume-guarantee reasoning,
-- model learning for automatic assumption construction,
-- preprocessing for internal/external channel-action splitting,
-- UPPAAL-based membership and candidate queries.
+- 内外部信道动作拆分；
+- 基于观察表的假设自动机学习；
+- 成员查询与候选查询驱动的组合验证流程；
+- 基于 UPPAAL 的底层模型检验与实验评估。
 
-The repository includes both the implementation and the experiment data used in the thesis.
+项目目标是在复杂环境和大规模系统场景下，通过学习与性质相关的紧凑环境假设，缓解直接整体模型检测中的状态空间爆炸问题。
 
-## Repository Structure
+## 仓库内容
 
-- `src/`
-  Java source code for the verification framework, learning components, timed automata utilities, UPPAAL integration, and experiment runners.
-- `Experiments/`
-  Random-case and real-case experiment configurations, results, summaries, and related artifacts.
-- `pom.xml`
-  Maven project file.
+- `src/`  
+  论文方法的主要实现代码，包括学习组件、验证组件、时间自动机相关数据结构、UPPAAL 交互模块以及实验执行入口。
 
-## Main Contents
+- `Experiments/`  
+  实验数据与实验配置，包括随机生成案例、实际案例、批量运行结果以及统计汇总结果。
 
-The implementation covers:
+- `pom.xml`  
+  Maven 项目配置文件。
 
-- learning-based assumption construction for one-clock timed automata,
-- compositional verification workflows for CCS-style timed systems,
-- internal/external channel-action splitting for binary-channel models,
-- experiment runners for random benchmarks and real-world case studies such as AUTOSAR, Train-Gate, and Producer-Consumer.
+## 主要内容说明
 
-## Environment
+本仓库当前包含的实现与数据主要覆盖以下方面：
 
-The project is developed in Java and uses Maven for build management. The verification backend relies on **UPPAAL** (in particular, `verifyta`) for model-checking tasks.
+1. 面向 CCS 风格时间系统的组合验证框架实现；
+2. 单时钟假设自动机的自动学习；
+3. 二元信道系统中的内外部动作拆分与接口预处理；
+4. 随机案例与实际案例实验，包括 AUTOSAR、Train-Gate、Producer-Consumer 等；
+5. 与直接使用 UPPAAL 进行整体模型检测的性能对比数据。
 
-Typical requirements:
+## 运行环境
+
+本项目采用 Java 实现，使用 Maven 进行构建管理，底层验证工具为 UPPAAL（尤其是 `verifyta`）。
+
+建议环境如下：
 
 - Java 8
 - Maven
 - UPPAAL / `verifyta`
 
-## Notes
+## 说明
 
-- This repository is intended to host the thesis-related source code and experiment materials only.
-- Temporary files, build outputs, and thesis drafts are intentionally excluded to keep the repository clean.
+- 本仓库仅保留论文相关的源代码、模型文件和实验数据。
+- 临时生成文件、构建产物以及论文撰写过程中的非必要文件已尽量排除，以保持仓库结构清晰。
